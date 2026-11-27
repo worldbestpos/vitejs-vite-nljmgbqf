@@ -47,7 +47,7 @@ type Quote = {
   customers?: {
     full_name: string;
     company_name: string | null;
-  } | null;
+  }[] | null;
 };
 
 const money = (value: number, currency: string) =>
