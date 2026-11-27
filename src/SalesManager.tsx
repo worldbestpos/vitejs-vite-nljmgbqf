@@ -90,7 +90,6 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
   const [customerId, setCustomerId] = useState('');
   const [paidAmount, setPaidAmount] = useState('');
   const [paymentMethod, setPaymentMethod] = useState('cash');
-  const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -497,7 +496,6 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
       setCustomerId('');
       setPaidAmount('');
       setPaymentMethod('cash');
-      setNotes('');
       setSearch('');
 
       setMessage(

@@ -42,7 +42,7 @@ type Purchase = {
   paid_amount: number;
   due_amount: number;
   status: string;
-  suppliers?: { supplier_name: string } | null;
+  suppliers?: { supplier_name: string }[] | null;
 };
 
 type PurchaseLine = {
@@ -1133,7 +1133,7 @@ export default function SuppliersPurchases({
                             {new Date(purchase.purchase_date).toLocaleDateString(dateLocale)}
                           </td>
                           <td style={{ padding: 11, borderTop: '1px solid #eee' }}>
-                            {purchase.suppliers?.supplier_name ||
+                            {purchase.suppliers?.[0]?.supplier_name||
                               tr('Supplier unavailable', 'आपूर्तिकर्ता उपलब्ध छैन')}
                           </td>
                           <td style={{ padding: 11, borderTop: '1px solid #eee' }}>
