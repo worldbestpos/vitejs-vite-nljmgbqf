@@ -317,6 +317,11 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
   function addToCart(product: Product) {
     setError('');
     setMessage('');
+    setQuantityDrafts(current => {
+      const updated = { ...current };
+      delete updated[product.id];
+      return updated;
+    });
 
     if (product.track_stock && product.stock <= 0) {
       setError(
@@ -357,24 +362,19 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
   }
 
   function changeQuantity(productId: string, quantity: number) {
-    if (quantity <= 0) {
-      setCart(current =>
-        current.filter(item => item.product.id !== productId)
-      );
-      return;
-    }
-
+    if (!Number.isInteger(quantity) || quantity < 1) return;
+  
     const product = products.find(p => p.id === productId);
-
+  
     if (product?.track_stock && quantity > product.stock) {
       setError(
         `${tr('Available stock is only', 'उपलब्ध स्टक जम्मा')} ${product.stock}.`
       );
       return;
     }
-
+  
     setError('');
-
+  
     setCart(current =>
       current.map(item =>
         item.product.id === productId
@@ -382,6 +382,46 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
           : item
       )
     );
+  }
+  
+  function handleQuantityInput(productId: string, value: string) {
+    setQuantityDrafts(current => ({
+      ...current,
+      [productId]: value,
+    }));
+  
+    if (value.trim() === '') return;
+  
+    const quantity = Number(value);
+  
+    if (Number.isInteger(quantity) && quantity >= 1) {
+      changeQuantity(productId, quantity);
+    }
+  }
+  
+  function finishQuantityEdit(productId: string) {
+    const item = cart.find(item => item.product.id === productId);
+  
+    if (!item) return;
+  
+    setQuantityDrafts(current => ({
+      ...current,
+      [productId]: String(item.quantity),
+    }));
+  }
+  
+  function removeCartItem(productId: string) {
+    setCart(current =>
+      current.filter(item => item.product.id !== productId)
+    );
+  
+    setQuantityDrafts(current => {
+      const updated = { ...current };
+      delete updated[productId];
+      return updated;
+    });
+  
+    setError('');
   }
 
   async function createCustomer(e: React.FormEvent) {
@@ -494,6 +534,7 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
       });
 
       setCart([]);
+      setQuantityDrafts({});
       setCustomerId('');
       setPaidAmount('');
       setPaymentMethod('cash');
@@ -912,11 +953,12 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
                             type="number"
                             min="1"
                             step="1"
-                            value={item.quantity}
-                            style={{ ...styles.input, width: 70, padding: 7 }}
+                            value={quantityDrafts[item.product.id] ?? String(item.quantity)}
+                            style={{ ...styles.input, width: 80, padding: 7 }}
                             onChange={e =>
-                              changeQuantity(item.product.id, Number(e.target.value))
+                              handleQuantityInput(item.product.id, e.target.value)
                             }
+                            onBlur={() => finishQuantityEdit(item.product.id)}
                           />
                         </td>
 
@@ -930,10 +972,17 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
 
                         <td style={styles.td}>
                           <button
-                            style={styles.secondaryButton}
-                            onClick={() => changeQuantity(item.product.id, 0)}
+                            type="button"
+                            style={{
+                              ...styles.secondaryButton,
+                              color: '#D14343',
+                              borderColor: '#F0CACA',
+                              padding: '6px 9px',
+                            }}
+                            onClick={() => removeCartItem(item.product.id)}
+                            aria-label={tr('Remove product', 'उत्पादन हटाउनुहोस्')}
                           >
-                            {tr('Remove', 'हटाउनुहोस्')}
+                            × {tr('Remove', 'हटाउनुहोस्')}
                           </button>
                         </td>
                       </tr>
@@ -1093,6 +1142,7 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
                   style={styles.secondaryButton}
                   onClick={() => {
                     setCart([]);
+                    setQuantityDrafts({});
                     setPaidAmount('');
                     setCustomerId('');
                     setError('');
