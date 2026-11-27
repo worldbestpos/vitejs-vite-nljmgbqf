@@ -49,7 +49,7 @@ const PERMISSIONS = [
 ] as const;
 
 const emptyShopForm = {
-  company_name: '', owner_name: '', owner_email: '', branch_name: 'Head Office',
+  company_name: '', owner_name: '', owner_email: '', owner_password: '', branch_name: 'Head Office',
   branch_code: 'HQ', currency: 'NPR', phone: '', address: '',
 };
 
@@ -155,7 +155,7 @@ export default function PlatformOwnerDashboard({
       const { data, error: invokeError } = await supabase.functions.invoke('create-shop', { body: form });
       if (invokeError) throw invokeError;
       if (data?.error) throw new Error(data.error);
-      setNotice(data?.warning || `Shop created. An invitation has been sent to ${form.owner_email}.`);
+      setNotice(data?.message || `Shop and admin login created. Login email: ${form.owner_email}.`);
       setForm(emptyShopForm);
       setShowCreate(false);
       await refresh();
@@ -282,14 +282,16 @@ export default function PlatformOwnerDashboard({
           <div className="platform-form-grid">
             <label>Shop / business name<input required value={form.company_name} onChange={e => setForm({ ...form, company_name: e.target.value })} placeholder="Example: Shop A" /></label>
             <label>Shop admin full name<input value={form.owner_name} onChange={e => setForm({ ...form, owner_name: e.target.value })} placeholder="Admin name" /></label>
-            <label>Shop admin email<input required type="email" value={form.owner_email} onChange={e => setForm({ ...form, owner_email: e.target.value })} placeholder="admin@example.com" /></label>
+            <label>Shop admin login email<input required type="email" value={form.owner_email} onChange={e => setForm({ ...form, owner_email: e.target.value })} placeholder="admin@example.com" /></label>
+
+<label>Shop admin password<input required type="password" minLength={8} autoComplete="new-password" value={form.owner_password} onChange={e => setForm({ ...form, owner_password: e.target.value })} placeholder="At least 8 characters" /></label>
             <label>First branch name<input required value={form.branch_name} onChange={e => setForm({ ...form, branch_name: e.target.value })} /></label>
             <label>Branch code<input required value={form.branch_code} onChange={e => setForm({ ...form, branch_code: e.target.value })} /></label>
             <label>Currency<select value={form.currency} onChange={e => setForm({ ...form, currency: e.target.value })}><option value="NPR">NPR — Nepalese Rupee</option><option value="USD">USD — US Dollar</option><option value="INR">INR — Indian Rupee</option><option value="AED">AED — UAE Dirham</option></select></label>
             <label>Phone<input value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} placeholder="Shop phone" /></label>
             <label>Address<input value={form.address} onChange={e => setForm({ ...form, address: e.target.value })} placeholder="Shop address" /></label>
           </div>
-          <div className="platform-form-actions"><button className="platform-primary-button" disabled={saving}>{saving ? 'Creating shop…' : 'Create shop and invite admin'}</button></div>
+          <div className="platform-form-actions"><button className="platform-primary-button" disabled={saving}>{saving ? 'Creating shop and admin login…' : 'Create shop and admin login'}</button></div>
         </form>
       )}
 
