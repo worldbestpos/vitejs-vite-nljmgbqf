@@ -116,6 +116,15 @@ export default function App() {
   });
 
   const [page, setPage] = useState('Dashboard');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+const [layoutMode, setLayoutMode] = useState<'auto' | 'mobile' | 'desktop'>(
+  () => (localStorage.getItem('drg-layout') as 'auto' | 'mobile' | 'desktop') || 'auto'
+);
+
+useEffect(() => {
+  localStorage.setItem('drg-layout', layoutMode);
+}, [layoutMode]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [loadingWorkspace, setLoadingWorkspace] = useState(true);
@@ -444,8 +453,16 @@ export default function App() {
   } as CSSProperties;
 
   return (
-    <div className={`drg-app ${theme}`} style={rootStyle}>
-      <aside className="drg-sidebar">
+    <div className={`drg-app ${theme} layout-${layoutMode}`} style={rootStyle}>
+      {mobileMenuOpen && (
+  <button
+    className="drg-mobile-backdrop"
+    aria-label="Close navigation"
+    onClick={() => setMobileMenuOpen(false)}
+  />
+)}
+
+<aside className={`drg-sidebar ${mobileMenuOpen ? 'mobile-open' : ''}`}>
         <div className="drg-brand">
           <div className="drg-brand-logo">{workspace.logoUrl ? <img src={workspace.logoUrl} alt={workspace.companyName} /> : 'DR'}</div>
 
@@ -486,7 +503,10 @@ export default function App() {
               .map((item) => (
                 <button
                   key={item.name}
-                  onClick={() => setPage(item.name)}
+                  onClick={() => {
+                    setPage(item.name);
+                    setMobileMenuOpen(false);
+                  }}
                   className={`drg-nav-button ${
                     page === item.name ? 'active' : ''
                   }`}
@@ -551,6 +571,13 @@ export default function App() {
       <main className="drg-main">
         <header className="drg-topbar">
           <div className="drg-topbar-title">
+          <button
+  className="drg-mobile-menu-button"
+  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+  aria-label="Toggle navigation"
+>
+  {mobileMenuOpen ? '✕' : '☰'}
+</button>
             <div className="drg-mobile-brand">{workspace.logoUrl ? <img src={workspace.logoUrl} alt={workspace.companyName} /> : "DR"}</div>
 
             <div>
@@ -565,6 +592,16 @@ export default function App() {
           </div>
 
           <div className="drg-topbar-right">
+          <select
+  className="drg-layout-select"
+  value={layoutMode}
+  onChange={(e) => setLayoutMode(e.target.value as 'auto' | 'mobile' | 'desktop')}
+  aria-label="Choose layout"
+>
+  <option value="auto">Automatic</option>
+  <option value="mobile">Mobile</option>
+  <option value="desktop">Desktop</option>
+</select>
             <span className="drg-branch-pill">
               <span className="drg-live-dot" />
               {workspace.branchName}

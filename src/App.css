@@ -1227,164 +1227,102 @@
 
 
 
-/* =========================================
-   D.R GLOBAL — MOBILE & TABLET IMPROVEMENTS
-   ========================================= */
 
-/* Better sizing on all devices */
+/* ==========================================
+   D.R GLOBAL — RESPONSIVE NAVIGATION SYSTEM
+   ========================================== */
+
+.drg-mobile-menu-button,
+.drg-layout-select {
+  display: none;
+}
+
+.drg-mobile-backdrop {
+  display: none;
+}
+
 .drg-app,
 .drg-app * {
   box-sizing: border-box;
 }
 
-.drg-app {
-  width: 100%;
-  overflow-x: hidden;
+/* Desktop and tablet */
+@media (min-width: 761px) {
+  .drg-app.layout-mobile .drg-sidebar {
+    width: 230px;
+    flex-basis: 230px;
+  }
+
+  .drg-layout-select {
+    display: block;
+    min-height: 38px;
+    padding: 7px 10px;
+    border: 1px solid var(--drg-border);
+    border-radius: 9px;
+    background: var(--drg-surface);
+    color: var(--drg-text);
+    font: inherit;
+    font-size: 11px;
+  }
+
+  .drg-app.layout-desktop .drg-sidebar {
+    width: 258px;
+    flex-basis: 258px;
+  }
 }
 
-.drg-main {
-  min-width: 0;
-  width: 100%;
-}
+/* Mobile navigation drawer */
+@media (max-width: 760px) {
+  .drg-mobile-menu-button {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex: 0 0 42px;
+    border: 1px solid var(--drg-border);
+    border-radius: 11px;
+    background: var(--drg-surface-soft);
+    color: var(--drg-text);
+    font-size: 21px;
+    cursor: pointer;
+  }
 
-.drg-content {
-  width: 100%;
-  min-width: 0;
-}
-
-/* Tablet layout */
-@media (min-width: 761px) and (max-width: 1100px) {
-  .drg-sidebar {
-    width: 210px;
-    flex-basis: 210px;
-    padding-left: 12px;
-    padding-right: 12px;
+  .drg-layout-select {
+    display: block;
+    width: auto;
+    max-width: 112px;
+    min-height: 40px;
+    padding: 7px;
+    border: 1px solid var(--drg-border);
+    border-radius: 9px;
+    background: var(--drg-surface);
+    color: var(--drg-text);
+    font-size: 10px;
   }
 
   .drg-topbar {
-    padding-left: 20px;
-    padding-right: 20px;
-  }
-
-  .drg-content {
-    padding: 22px 20px 30px;
-  }
-
-  .drg-dashboard-columns {
-    grid-template-columns: 1fr;
-  }
-
-  .drg-welcome-art {
-    opacity: .75;
-  }
-}
-
-/* Mobile layout */
-@media (max-width: 760px) {
-  .drg-app {
-    display: block;
-    min-height: 100vh;
-  }
-
-  /* Compact, scrollable navigation */
-  .drg-sidebar {
     position: sticky;
     top: 0;
-    z-index: 100;
-    width: 100%;
-    min-height: auto;
-    max-height: 35vh;
+    z-index: 90;
+    min-height: 64px;
+    flex-wrap: nowrap;
+    gap: 7px;
     padding: 9px 10px;
-    overflow-x: hidden;
-    overflow-y: auto;
-    border-bottom: 1px solid rgba(255,255,255,.12);
-    box-shadow: 0 5px 18px rgba(0,0,0,.12);
   }
 
-  .drg-brand {
-    padding: 2px 5px 9px;
-  }
-
-  .drg-brand-logo {
-    width: 35px;
-    height: 35px;
-    flex-basis: 35px;
-    border-radius: 10px;
-  }
-
-  .drg-brand-copy strong {
-    font-size: 13px;
-  }
-
-  .drg-brand-copy span {
-    font-size: 8px;
-  }
-
-  .drg-menu-group {
-    display: inline;
-  }
-
-  .drg-menu-group .drg-sidebar-caption,
-  .drg-workspace-chip,
-  .drg-sidebar-bottom,
-  .drg-sidebar > .drg-sidebar-caption {
-    display: none;
-  }
-
-  .drg-nav-button {
-    width: auto;
-    min-height: 40px;
-    margin: 3px 2px;
-    padding: 9px 11px;
-    display: inline-flex;
-    border-radius: 9px;
-    font-size: 11px;
-    white-space: nowrap;
-  }
-
-  .drg-nav-icon {
-    width: auto;
-    font-size: 15px;
-  }
-
-  .drg-nav-indicator {
-    display: none;
-  }
-
-  /* Top navigation bar */
-  .drg-topbar {
-    position: relative;
-    min-height: 60px;
-    padding: 10px 12px;
-    gap: 8px;
-    flex-wrap: wrap;
-  }
-
-  .drg-topbar-title,
-  .drg-topbar-right {
-    gap: 8px;
+  .drg-topbar-title {
     min-width: 0;
+    flex: 1;
+    gap: 8px;
   }
 
-  .drg-topbar h2 {
-    font-size: 16px;
-    overflow-wrap: anywhere;
-  }
-
-  .drg-page-kicker {
-    font-size: 8px;
-  }
-
-  .drg-top-user {
-    display: none;
+  .drg-topbar-right {
+    min-width: 0;
+    gap: 6px;
   }
 
   .drg-branch-pill {
-    max-width: 145px;
-    padding: 7px 9px;
-    font-size: 9px;
-    overflow: hidden;
-    white-space: nowrap;
+    display: none;
   }
 
   .drg-theme-shortcut {
@@ -1393,218 +1331,163 @@
     flex: 0 0 40px;
   }
 
-  /* Main content */
+  /* Hidden drawer by default */
+  .drg-sidebar {
+    position: fixed !important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 120;
+    width: min(84vw, 310px) !important;
+    height: 100dvh;
+    max-height: none !important;
+    min-height: 100dvh !important;
+    padding: 18px 14px 25px !important;
+    display: flex !important;
+    flex-direction: column;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    transform: translateX(-110%);
+    transition: transform .25s ease;
+    box-shadow: 8px 0 35px rgba(0,0,0,.25);
+  }
+
+  .drg-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .drg-mobile-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 110;
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: rgba(9,10,24,.58);
+  }
+
+  .drg-sidebar .drg-brand {
+    padding: 5px 5px 20px;
+    border-bottom: 1px solid rgba(255,255,255,.1);
+  }
+
+  .drg-sidebar .drg-sidebar-caption {
+    display: block;
+    margin: 18px 0 8px;
+  }
+
+  .drg-sidebar .drg-workspace-chip {
+    display: flex;
+    margin-bottom: 8px;
+  }
+
+  .drg-sidebar .drg-menu-group {
+    display: block;
+  }
+
+  .drg-sidebar .drg-menu-group .drg-sidebar-caption {
+    display: block;
+  }
+
+  .drg-sidebar .drg-nav-button {
+    display: flex;
+    width: 100%;
+    min-height: 44px;
+    margin: 3px 0;
+    padding: 10px 12px;
+    font-size: 12px;
+    white-space: normal;
+  }
+
+  .drg-sidebar .drg-nav-icon {
+    width: 22px;
+    font-size: 16px;
+  }
+
+  .drg-sidebar .drg-nav-indicator {
+    display: block;
+  }
+
+  .drg-sidebar .drg-sidebar-bottom {
+    display: block;
+    margin-top: auto;
+  }
+
+  .drg-sidebar .drg-user-mini {
+    display: flex;
+  }
+
+  .drg-sidebar .drg-logout-button {
+    display: block;
+  }
+
   .drg-content {
-    padding: 14px 11px 25px;
+    padding: 14px 11px 28px;
   }
 
-  .drg-dashboard {
-    gap: 17px;
-  }
-
-  .drg-welcome-banner {
-    min-height: 175px;
-    padding: 19px;
-    border-radius: 15px;
-  }
-
-  .drg-welcome-copy {
-    max-width: 100%;
-  }
-
-  .drg-welcome-copy h1 {
-    font-size: 25px;
-    line-height: 1.2;
-  }
-
-  .drg-welcome-copy p {
-    max-width: 260px;
-    font-size: 11px;
-  }
-
-  .drg-welcome-art {
-    right: -105px;
-    opacity: .2;
-    pointer-events: none;
-  }
-
-  /* Dashboard cards */
   .drg-stat-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
-  }
-
-  .drg-stat-card {
-    min-width: 0;
-    min-height: 120px;
-    padding: 12px;
-    border-radius: 12px;
-  }
-
-  .drg-stat-top {
-    align-items: flex-start;
-    font-size: 10px;
-  }
-
-  .drg-stat-icon {
-    width: 30px;
-    height: 30px;
-    flex: 0 0 30px;
-    font-size: 15px;
-  }
-
-  .drg-stat-value {
-    margin-top: 10px;
-    font-size: clamp(19px, 6vw, 25px);
-    overflow-wrap: anywhere;
   }
 
   .drg-dashboard-columns {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 13px;
+    grid-template-columns: 1fr;
   }
 
   .drg-panel {
     min-width: 0;
-    padding: 14px;
-    border-radius: 13px;
   }
 
-  .drg-section-heading,
-  .drg-panel-heading {
-    gap: 9px;
-    flex-wrap: wrap;
-  }
-
-  .drg-section-heading h2,
-  .drg-panel-heading h2 {
-    font-size: 15px;
-  }
-
-  .drg-quick-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
-  }
-
-  .drg-quick-action {
-    min-width: 0;
-    min-height: 75px;
-    padding: 10px;
-  }
-
-  .drg-quick-action strong {
-    font-size: 10px;
-    overflow-wrap: anywhere;
-  }
-
-  .drg-dashboard-footer {
-    flex-direction: column;
-    gap: 7px;
-  }
-
-  /* Settings */
-  .drg-settings-page {
-    gap: 14px;
-  }
-
-  .drg-settings-intro h1 {
-    font-size: 24px;
-  }
-
+  .drg-settings-page,
   .drg-setting-card {
     width: 100%;
     max-width: none;
   }
 
-  .drg-theme-options {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 9px;
-  }
-
-  .drg-theme-option {
-    min-width: 0;
-    padding: 10px;
-  }
-
-  .drg-theme-preview {
-    height: 65px;
-  }
-
-  .drg-color-options {
-    gap: 7px;
-  }
-
-  .drg-color-choice {
-    width: 65px;
-    min-height: 65px;
-  }
-
   .drg-input {
     width: 100%;
     max-width: none;
-    min-height: 45px;
+    min-height: 46px;
     font-size: 16px;
   }
 
-  .drg-primary-button,
-  .drg-welcome-button,
-  .drg-login-button {
-    min-height: 44px;
-  }
-
-  /* Avoid content escaping the screen */
   .drg-app table {
+    display: block;
     max-width: 100%;
+    overflow-x: auto;
   }
 
-  .drg-app img {
-    max-width: 100%;
+  .drg-app button {
+    touch-action: manipulation;
   }
 }
 
-/* Small phones */
+/* Manual mobile layout on larger screens */
+@media (min-width: 761px) {
+  .drg-app.layout-mobile .drg-sidebar {
+    width: 230px;
+    flex-basis: 230px;
+  }
+}
+
+/* Small phone */
 @media (max-width: 420px) {
-  .drg-content {
-    padding-left: 9px;
-    padding-right: 9px;
+  .drg-layout-select {
+    max-width: 91px;
+    font-size: 9px;
+  }
+
+  .drg-mobile-menu-button {
+    width: 39px;
+    height: 39px;
+    flex-basis: 39px;
+  }
+
+  .drg-topbar h2 {
+    font-size: 14px;
   }
 
   .drg-stat-card {
     padding: 10px;
-  }
-
-  .drg-stat-value {
-    font-size: 20px;
-  }
-
-  .drg-quick-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .drg-theme-options {
-    grid-template-columns: 1fr;
-  }
-
-  .drg-login-card {
-    padding: 25px 19px;
-  }
-
-  .drg-topbar {
-    padding-left: 9px;
-    padding-right: 9px;
-  }
-}
-
-/* Touchscreen usability */
-@media (hover: none) and (pointer: coarse) {
-  .drg-app button {
-    touch-action: manipulation;
-  }
-
-  .drg-nav-button,
-  .drg-theme-shortcut,
-  .drg-quick-action,
-  .drg-primary-button {
-    min-height: 44px;
   }
 }
