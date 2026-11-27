@@ -83,6 +83,7 @@ export default function SalesManager({ companyId, branchId, currency }: Props) {
   const [products, setProducts] = useState<Product[]>([]);
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [cart, setCart] = useState<CartItem[]>([]);
+  const [quantityDrafts, setQuantityDrafts] = useState<Record<string, string>>({});
   const [sales, setSales] = useState<Sale[]>([]);
   const [saleItems, setSaleItems] = useState<any[]>([]);
   const [saleCostItems, setSaleCostItems] = useState<any[]>([]);
